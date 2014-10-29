@@ -12,6 +12,7 @@ function ints = intensities(dirname,im_files,empty_im_file)
         im = imread(fullfile(dirname,im_files{i}));
         seg_im = segment_cells(im,empty_back,im_files{i});
         ints(i) = sum(sum(seg_im))/nnz(seg_im);
+        
     end
 end
 
