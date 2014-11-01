@@ -1,7 +1,9 @@
 %Run on egf experiment
 
-dirname = 'TimePoint_37';
-f = dir(dirname);
+maindir = '/Users/jamo1880/Documents/IQ_bio_project2/test/data';
+
+main = dir(dirname);
+
 
 empty_fret_im_file = regexpi({f.name},'empty.*w1.*tif','match');
 empty_fret_im_file = [empty_fret_im_file{:}];
