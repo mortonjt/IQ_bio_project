@@ -1,49 +1,36 @@
-function [IC50,ci] = calculateIC50(empty_dir,dirname,dt)
-  ef = dir(empty_dir);
+%Calculate the IC50 for a specified timepoint
+function [IC50,ci,rsq2] = calculateIC50(dirname,empty_well,var_well,timepoint,egf)
+
+  ef = dir(empty_well);
   f = dir(dirname);
   empty_fret_files = regexpi({ef.name},'site 1 wavelength 1.*tif','match');
   empty_fret_files = [empty_fret_files{:}];
   empty_cfp_files = regexpi({ef.name},'site 1 wavelength 2.*tif','match');
   empty_cfp_files = [empty_cfp_files{:}];
 
-  fret_im_files1 = regexpi({f.name},'site 1 wavelength 1.*tif','match');
-  fret_im_files1 = [fret_im_files1{:}];
-  cfp_im_files1 = regexpi({f.name},'site 1 wavelength 2.*tif','match');
-  cfp_im_files1 = [cfp_im_files1{:}];
+  fret_im_files = getFiles(dirname,var_well,1,timepoint);
+  cfp_im_files = getFiles(dirname,var_well,2,timepoint);
+  empty_fret_files = getEmptyFiles(dirname,empty_well,1,timepoint);
+  empty_cfp_files = getEmptyFiles(dirname,empty_well,2,timepoint);
 
-  fret_im_files2 = regexpi({f.name},'site 2 wavelength 1.*tif','match');
-  cfp_im_files2 = regexpi({f.name},'site 2 wavelength 2.*tif','match');
-  fret_im_files2 = [fret_im_files2{:}];
-  cfp_im_files2 = [cfp_im_files2{:}];
-
-  fret_im_files3 = regexpi({f.name},'site 3 wavelength 1.*tif','match');
-  cfp_im_files3 = regexpi({f.name},'site 3 wavelength 2.*tif','match');
-  fret_im_files3 = [fret_im_files3{:}];
-  cfp_im_files3 = [cfp_im_files3{:}];
-  
-  fret_im_files4 = regexpi({f.name},'site 4 wavelength 1.*tif','match');
-  cfp_im_files4 = regexpi({f.name},'site 4 wavelength 2.*tif','match');
-  fret_im_files4 = [fret_im_files4{:}];
-  cfp_im_files4 = [cfp_im_files4{:}];
-
-  frets1 = intensities(dirname,fret_im_files1,empty_fret_files);
-  cfp1 = intensities(dirname,cfp_im_files1,empty_cfp_files);
+  frets1 = intensities(fret_im_files(1,:),empty_fret_files{1});
+  cfp1 = intensities(cfp_im_files(1,:),empty_cfp_files{1});
  
-  frets2 = intensities(dirname,fret_im_files2,empty_fret_files);
-  cfp2 = intensities(dirname,cfp_im_files2,empty_cfp_files);
+  frets2 = intensities(fret_im_files(2,:),empty_fret_files{1});
+  cfp2 = intensities(cfp_im_files(2,:),empty_cfp_files{1});
  
-  frets3 = intensities(dirname,fret_im_files3,empty_fret_files);
-  cfp3 = intensities(dirname,cfp_im_files3,empty_cfp_files);
+  frets3 = intensities(fret_im_files(3,:),empty_fret_files{1});
+  cfp3 = intensities(cfp_im_files(3,:),empty_cfp_files{1});
 
-  frets4 = intensities(dirname,fret_im_files4,empty_fret_files);
-  cfp4 = intensities(dirname,cfp_im_files4,empty_cfp_files);
+  frets4 = intensities(fret_im_files(4,:),empty_fret_files{1});
+  cfp4 = intensities(cfp_im_files(4,:),empty_cfp_files{1});
   
   well1_ratio = frets1./cfp1;
   well2_ratio = frets2./cfp2;
   well3_ratio = frets3./cfp3;
   well4_ratio = frets4./cfp4;
   
-  ratios = [well1_ratio;well2_ratio;well3_ratio;well4_ratio];
+  ratios = [well1_ratio; well2_ratio; well3_ratio; well4_ratio];
   mratios = mean(ratios,1);
   top = max(mratios);
   bot = min(mratios);
@@ -51,7 +38,6 @@ function [IC50,ci] = calculateIC50(empty_dir,dirname,dt)
   top = max(max(ratios));
   bot = min(min(ratios));
   ratios = (ratios-bot)/(top-bot);
-  egf = dt*(0:length(empty_fret_files)-1);
     
 
   nlr = @(p,x)[1./(1+x./p(1))];
