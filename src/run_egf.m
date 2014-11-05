@@ -1,5 +1,4 @@
 %Run on egf experiment
-
 maindir = '/Users/jamo1880/Documents/IQ_bio_project2/test/data';
 
 main = dir(dirname);

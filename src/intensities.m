@@ -1,17 +1,24 @@
 %%For a set of images return a vector of intensities
-function ints = intensities(im_files,empty_im_file)
+%%
+%% TODO: Multiply masks together
+%%       Make sure same pixels in both images are analyzed
+function ratios = intensities(fret_im_files,cfp_im_files,empty_im_file)
     % im_files - array of image filenames
     % empty_im_file - empty file name
-    n = length(im_files);
-    ints = zeros(1,n);
+    n = length(fret_im_files);
+    ratios = zeros(1,n);
     empty_im = imread(fullfile(empty_im_file));
     empty_im2 = imopen(empty_im,strel('disk',5));
     empty_back=uint16(empty_im2);
     for i=1:n
-
-        im = imread(fullfile(im_files{i}));
-        seg_im = segment_cells(im,empty_back,im_files{i});
-        ints(i) = sum(sum(seg_im))/nnz(seg_im);
+        [fret_seg_im,fret_mask] = segment_cells(empty_back,fret_im_files{i});
+        [cfp_seg_im,cfp_mask] = segment_cells(empty_back,cfp_im_files{i});
+        fret_seg_im = fret_seg_im.*cfp_mask;
+        cfp_seg_im = cfp_seg_im.*cfp_mask;
+        ratio_im=double(fret_seg_im)./double(cfp_seg_im);
+        ratio_im(isnan(ratio_im)==1)=0;
+        %ints(i) = sum(sum(seg_im))/nnz(seg_im);
+        ratios(i) = sum(sum(ratio_im))/nnz(ratio_im);
         
     end
 end

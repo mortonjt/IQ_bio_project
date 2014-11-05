@@ -1,12 +1,12 @@
 %Calculate the IC50 for a specified timepoint
 function [IC50,ci,rsq2] = calculateIC50(dirname,empty_well,var_well,timepoint,egf)
 
-  ef = dir(empty_well);
-  f = dir(dirname);
-  empty_fret_files = regexpi({ef.name},'site 1 wavelength 1.*tif','match');
-  empty_fret_files = [empty_fret_files{:}];
-  empty_cfp_files = regexpi({ef.name},'site 1 wavelength 2.*tif','match');
-  empty_cfp_files = [empty_cfp_files{:}];
+  %ef = dir(empty_well);
+  %f = dir(dirname);
+  %empty_fret_files = regexpi({ef.name},'site 1 wavelength 1.*tif','match');
+  %empty_fret_files = [empty_fret_files{:}];
+  %empty_cfp_files = regexpi({ef.name},'site 1 wavelength 2.*tif','match');
+  %empty_cfp_files = [empty_cfp_files{:}];
 
   fret_im_files = getFiles(dirname,var_well,1,timepoint);
   cfp_im_files = getFiles(dirname,var_well,2,timepoint);
@@ -14,16 +14,16 @@ function [IC50,ci,rsq2] = calculateIC50(dirname,empty_well,var_well,timepoint,eg
   empty_cfp_files = getEmptyFiles(dirname,empty_well,2,timepoint);
 
   frets1 = intensities(fret_im_files(1,:),empty_fret_files{1});
-  cfp1 = intensities(cfp_im_files(1,:),empty_cfp_files{1});
+  cfp1 = intensities(cfp_im_files(1,:),empty_cfp_files{2});
  
   frets2 = intensities(fret_im_files(2,:),empty_fret_files{1});
-  cfp2 = intensities(cfp_im_files(2,:),empty_cfp_files{1});
+  cfp2 = intensities(cfp_im_files(2,:),empty_cfp_files{2});
  
   frets3 = intensities(fret_im_files(3,:),empty_fret_files{1});
-  cfp3 = intensities(cfp_im_files(3,:),empty_cfp_files{1});
+  cfp3 = intensities(cfp_im_files(3,:),empty_cfp_files{2});
 
   frets4 = intensities(fret_im_files(4,:),empty_fret_files{1});
-  cfp4 = intensities(cfp_im_files(4,:),empty_cfp_files{1});
+  cfp4 = intensities(cfp_im_files(4,:),empty_cfp_files{2});
   
   well1_ratio = frets1./cfp1;
   well2_ratio = frets2./cfp2;

@@ -1,9 +1,9 @@
 
 %% segment all of the cells
-function [im4] = segment_cells(im,empty_im,imname)
-    % im - image to be analyzed
+function [processed_im,total_mask] = segment_cells(empty_im,imname)
     % imname - name of image
     % empty_im - empty image
+    im=imread(fullfile(imname));
     im2=uint16(double(im)./double(empty_im)*mean(mean(empty_im)));
     
     %Background correction
@@ -22,6 +22,8 @@ function [im4] = segment_cells(im,empty_im,imname)
     bw2=bwareaopen(bw,5);
     cc = bwconncomp(im4);  
     im4(bw2==0)=0;
+    processed_im = im4;
+    total_mask = uint16(zeros(size(im3)));
     im5 = uint16(zeros(size(im)));
     for cell = 1:cc.NumObjects        
         bwc=zeros(size(im3));
@@ -31,15 +33,18 @@ function [im4] = segment_cells(im,empty_im,imname)
         %figure
         %imshow(imcomplement(tmpim));
         if(nnz(tmpim)>10)
-            im5 = im5+im4.*mask;
+            total_mask = total_mask+mask;
         end
     end
-%     [pathstr,name,ext] = fileparts(imname);
-%     imwrite(imcomplement(im),sprintf('images/%s_im1.tif',name));
-%     imwrite(imcomplement(im2),sprintf('images/%s_im2.tif',name));
-%     imwrite(imcomplement(im3),sprintf('images/%s_im3.tif',name));
-%     imwrite(imcomplement(im4),sprintf('images/%s_im4.tif',name));
-%     imwrite(imcomplement(im5),sprintf('images/%s_im5.tif',name));
+    [pathstr,name,ext] = fileparts(imname);
+    [pathstr,well,ext] = fileparts(pathstr);
+
+    imwrite(imcomplement(empty_im),sprintf('images/%s_%s_empty.tif',well,name));
+    imwrite(imcomplement(im),sprintf('images/%s_%s_im1.tif',well,name));
+    imwrite(imcomplement(im2),sprintf('images/%s_%s_im2.tif',well,name));
+    imwrite(imcomplement(im3),sprintf('images/%s_%s_im3.tif',well,name));
+    imwrite(imcomplement(im4),sprintf('images/%s_%s_im4.tif',well,name));
+    imwrite(imcomplement(im5),sprintf('images/%s_%s_im5.tif',well,name));
 %     imshow(imcomplement(im));
 %     figure
 %     imshow(imcomplement(im2));
