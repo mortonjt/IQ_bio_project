@@ -2,6 +2,7 @@
 #PBS -l nodes=1
 #PBS -l cput=20:00:00
 #PBS -M jamo1880@colorado.edu
+#PBS -mabe
 
 cd ~/Documents/IQ_bio_project2/src
 module load matlab_R2013b
