@@ -39,12 +39,12 @@ function [processed_im,total_mask] = segment_cells(empty_im,imname)
     [pathstr,name,ext] = fileparts(imname);
     [pathstr,well,ext] = fileparts(pathstr);
 
-    imwrite(imcomplement(empty_im),sprintf('images/%s_%s_empty.tif',well,name));
-    imwrite(imcomplement(im),sprintf('images/%s_%s_im1.tif',well,name));
-    imwrite(imcomplement(im2),sprintf('images/%s_%s_im2.tif',well,name));
-    imwrite(imcomplement(im3),sprintf('images/%s_%s_im3.tif',well,name));
-    imwrite(imcomplement(im4),sprintf('images/%s_%s_im4.tif',well,name));
-    imwrite(imcomplement(im5),sprintf('images/%s_%s_im5.tif',well,name));
+%    imwrite(imcomplement(empty_im),sprintf('images/%s_%s_empty.tif',well,name));
+%    imwrite(imcomplement(im),sprintf('images/%s_%s_im1.tif',well,name));
+%    imwrite(imcomplement(im2),sprintf('images/%s_%s_im2.tif',well,name));
+%    imwrite(imcomplement(im3),sprintf('images/%s_%s_im3.tif',well,name));
+%    imwrite(imcomplement(im4),sprintf('images/%s_%s_im4.tif',well,name));
+%    imwrite(imcomplement(im5),sprintf('images/%s_%s_im5.tif',well,name));
 %     imshow(imcomplement(im));
 %     figure
 %     imshow(imcomplement(im2));
