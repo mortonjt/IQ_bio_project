@@ -1,4 +1,4 @@
-function files = getFiles(dirname,var_well,wavelength,timepoint)
+function files = getEmptyFiles(dirname,var_well,wavelength,timepoint)
   %example: /data2/IQBIO2014/Inhibitor Timecourses/0hr
   f = dir(dirname);
   dir_pattern = sprintf('well %s01+',var_well);

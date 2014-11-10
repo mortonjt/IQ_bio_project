@@ -3,7 +3,6 @@
 dirname = 'TimePoint_72';
 f = dir(dirname);
 
-
 empty_fret_im_file = regexpi({f.name},'empty.*w1.*tif','match');
 empty_fret_im_file = [empty_fret_im_file{:}];
 empty_cfp_im_file = regexpi({f.name},'empty.*w2.*tif','match');
