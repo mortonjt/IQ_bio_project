@@ -5,7 +5,6 @@ function [mratios,errs,raw_ratios,IC50,ci,rsq2] = calculateIC50(dirname,empty_we
     cfp_im_files = getFiles(dirname,var_well,2,timepoint);
     %empty_fret_files = getEmptyFiles(dirname,empty_well,1,timepoint);
     empty_cfp_files = getEmptyFiles(dirname,empty_well,2,timepoint);
-
     well1_ratio = intensities(fret_im_files(1,:),cfp_im_files(1,:),empty_cfp_files{1});
     well2_ratio = intensities(fret_im_files(2,:),cfp_im_files(2,:),empty_cfp_files{1});
     well3_ratio = intensities(fret_im_files(3,:),cfp_im_files(3,:),empty_cfp_files{1});
@@ -31,5 +30,16 @@ function [mratios,errs,raw_ratios,IC50,ci,rsq2] = calculateIC50(dirname,empty_we
     rsq1 = C(1,2)^2;
     rsq2 = 1 - sum(r.^2) / sum((fratios - mean(mratios)).^2);   
     ci = nlparci(IC50,r,'Jacobian',J);
-
+    
+    figure
+    y = logspace(0,log10(max(egf)),1000);
+    fy = nlr(IC50,y);
+    hold all;
+    plot(y,fy,'-r');
+    errorbar(egf,mratios,errs,'ob');
+    ax = gca;
+    set(ax,'XScale','log')
+    xlabel('[Inhibitor] (pM)')
+    ylabel('Percent intensity')
+    title('Dose response of Inhibitor concentration')
 end
