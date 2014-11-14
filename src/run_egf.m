@@ -2,7 +2,7 @@
 %testdir='/data2/IQBIO2014/Inhibitor Timecourses/0hr';
 testdir='/Volumes/PASSPORT/IQBio/data/0hr';
 
-egf = csvread('../egf.csv');
+egf = csvread('../params/egf.csv');
 B_egf=egf(1,:);
 C_egf=egf(2,:);
 D_egf=egf(3,:);
@@ -33,5 +33,6 @@ parfor t=1:numTimePoints
   ratio_mat(:,t) = mratios;
   err_mat(:,t) = errs;
 end
+
 
 save('results.mat')
