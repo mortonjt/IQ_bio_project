@@ -25,7 +25,7 @@ CIs = zeros(2,numTimePoints); %Confidence Intervals
 Rsqs = zeros(1,numTimePoints);%R squares
 parfor t=1:numTimePoints
   [mratios,errs,raw_ratios,IC50,ci,rsq2] = calculateIC50(dirname,empty_well,var_well,t,egf);
-  emptys(t)=empty_ratio;
+  
   IC50s(t)=IC50;
   CIs(:,t)=ci;
   Rsqs(t)=rsq2;
