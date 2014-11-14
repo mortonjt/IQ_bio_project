@@ -1,0 +1,27 @@
+Rate constants,,,,,,,,,,
+Reaction ID,Reaction,Reaction ID,Simplied reaction,Fwd Rxn,Rev Rxn,Order,Initial,Substrate ID,,
+1,EGF+EGFR<->EGF:EGFR,1,A + B ↔ M,1,1,1,1,1,EGF,A
+2,EGF:EGFR + RAS-GDP -> EGF:EGFR + RAS-GTP,2,M + C → M + L,1,0,1,1,2,EGFR,B
+3,RAS-GTP + RAF-off -> RAS-GDP + RAF-on ,3,L + D → C + K,1,0,1,1,3,RAS GDP,C
+4,RAF-on -> RAF-off,4,K → D,1,0,1,1,4,RAF off,D
+5,RAF-on + MEK-off -> RAF-on + MEK-on,5,K + J → K + E,1,0,1,1,5,MEK on,E
+6,MEK-on->MEK-off,6,E → J,1,0,1,1,6,ERK off,F
+7,MEK-on+ERK-off -> ERK-on + MEK-on,7,E + F → E + I,1,0,1,1,7,TACE off,G
+8,ERK-on->ERK-off,8,I → F,1,0,1,1,8,EGFR:TGFa,H
+9,ERK-on + TACE-off ->ERK-on + TACE-on,9,I + G → I + N,1,0,1,1,9,ERK on,I
+10,TGFA+EGF <-> EGFR:TGFa,10,O + B ↔ H,1,1,1,1,10,MEK off,J
+11,EGFR:EGF -> 0,11,M → 0,1,0,1,1,11,RAF on,K
+12,ERK-on + RAS-GTP -> ERK-on + RAS-GDP,12,I + L → I + C,1,0,1,1,12,RAS GTP,L
+13,0 -> EGFR,13,0 → B,1,0,1,1,13,EGFR:EGF,M
+14,0 -> EGF,14,0 → A,1,0,1,1,14,TACE on,N
+15,TACE-on -> TACE-on + TGFa,15,N → N + O,1,0,1,1,15,TGFa,O
+16,EGFR:TGFa -> 0,16,H → 0,1,0,1,1,16,SCH,P
+17,EGFR:TGFa + RAS-GDP → EGFR:TGFa + RAS-GTP,17,H + C → H + L,1,0,1,1,17,CI,Q
+18,TACE-on → TACE-off,18,N → G,1,0,1,1,18,ZM,R
+19,ERK-on + RAF-on → ERK-on + RAF-off,19,I + K → I + D,1,0,1,1,19,Gef,S
+20,CI... changes rate of 5 (RAF-on + MEK-off -> RAF-on + MEK-on),20,,,,,1,20,Gef:EGFR,T
+21,"ZM... changes rate of 3 (RAS-GTP + RAF-off -> RAS-GDP + RAF-on )(only acts on cRAF, small rate)",21,,,,,1,21,GM,U
+22,Gef... changes rate of 1 (EGF+EGFR<->EGF:EGFR),22,,,,,1,22,BMS,V
+23,GMRate... multiply by some constant to lower rate of 17 (0 → EGF),23,,,,,,,,
+24,GMRate... multiply by some (different) constant to lower rate of 18 (0 → EGF),24,,,,,,,,
+25,BMSRate... multiply by some constant to lower rate of 18 (TACE-on → TACE-on + TGFA),25,,,,,,,,
