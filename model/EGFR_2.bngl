@@ -1,0 +1,167 @@
+begin model
+
+begin parameters
+
+# Avogadro constant
+NA 6.02214e23 # [=] molecules per mol
+
+# fraction of cell to consider in a stochastic simulation
+f 1.0 # [=] dimensionless, 0<=f<=1
+
+# cytoplasmic volume
+#   A volume of 1 to 2 pL is typical for a mammalian cell (Ref 7).
+V f*1.5e-12 # [=] L (1.5 pL)
+
+# cell density (cells are growing in suspension)
+den 1.0e9 # [=] cells per L (1.0e6 cells per ml) 
+
+# volume of extracellular fluid surrounding a cell
+Vex=f/den
+
+# A typical assocation rate constant for a protein-protein interaction
+kon 1.0e6 # [=] /M/s
+
+# KD for EGF-EGFR binding (Refs 8 and 9)
+KD1 1.0e-9*(NA*Vex) # [=] molecules per cell
+# NB: this KD is rougly the one estimated for cases where the receptor
+#     cannot become phosphorylated.
+# A KD was measured by Farooq and co-workers
+#   for GRB2 nSH3 domain interaction with proline-rich sequences in SOS1;
+#   see Table 1 in Ref 6. See also Ref 5.
+# SOS1 PRR:GRB2 nSH3
+KDSOS 6.83e-6*(NA*V) # [=] molecules per cell
+
+
+# dissocation rate constant for EGF-EGFR interaction
+km1 0.02 # [=] /s (Ref 10)
+kp1=km1/KD1 # [=] /(molecule/cell)/s (2e7 /M/s)
+
+kpSOS=kon/(NA*V) # [=] /(molecule/cell)/s
+kmSOS=kpSOS*KDSOS
+
+
+
+# RAS parameters (from Table S1 in Ref 1)
+#   NB: equilibration is slow because of the small rate constants
+#   We assume that GDP and GTP concentrations are buffered (i.e., constant).
+GDP_conc 18 # [=] uM
+GTP_conc 180 # [=] uM
+khyd 3.5e-4 # [=] /s 
+kdGDP 1.1e-4 # [=] /s 
+kdGTP 2.5e-4 # [=] /s 
+kaGDP 2.3 # [=] /uM/s 
+kaGDPxGDP=kaGDP*GDP_conc # [=] /s
+kaGTP 2.2 # [=] /uM/s
+kaGTPxGTP=kaGTP*GTP_conc # [=] /s
+
+
+# effector parameters (from Table S1 in Ref 1)
+kdEff 3.6 # [=] /s
+kaEff_std_units 45e6 # [=] /M/s
+# Kd=kdEff/kaEff_std_units=0.08e-6 M 
+kaEff=kaEff_std_units/(NA*V)  # [=] /(molecule/cell)/s
+
+kp2 1e6/(NA*V)
+
+kcat2 1
+
+kphos3 1
+
+kdephos5 0.1
+
+
+
+
+#seed values
+# ligand dose
+EGF_conc 1.0e-10 # [=] M (0.1 nM)
+EGF_total=EGF_conc*(NA*Vex) # [=] copies per cell (60,000 when f=1)
+
+EGFR_total    92674*f # [=] molecules per cell
+SOS1_total     7565*f # [=] molecules per cell
+RAS_total    361328*f # [=] molecules per cell [RAS]=[HRAS]+[KRAS]+[NRAS]
+RAF_total     91356*f # [=] molecules per cell [RAF]=[ARAF]+[BRAF]+[RAF1]
+MEK_total    495536*f # [=] molecules per cell [MEK]=[MAP2K1]+[MAP2K2]
+ERK_total    603524*f # [=] molecules per cell [ERK]=[MAPK1]+[MAPK3]
+end parameters
+
+begin molecule types
+EGF(EGFL)
+EGFR(I_III,sos,pSite~0~P)
+SOS(egfr)
+RAS(raf,g~D~T)
+RAF(ras)
+MEK(pSite~0~P)
+ERK(pSite~0~P)
+
+end molecule types
+
+begin seed species
+EGF(EGFL) EGF_total
+EGFR(I_III,sos,pSite~0) EGFR_total
+SOS(egfr) SOS1_total
+RAS(raf,g~D) RAS_total
+RAF(ras) RAF_total
+MEK(pSite~0) MEK_total
+ERK(pSite~0) ERK_total
+end seed species
+
+begin observables
+Molecules boundEGF EGF(EGFL!+)
+Molecules activeERK ERK(pSite~P)
+end observables
+
+begin reaction rules
+
+# EGF reversibly binds EGFR
+EGF(EGFL)+EGFR(I_III)<->EGF(EGFL!1).EGFR(I_III!1) kp1,km1
+
+### From sturm paper ###
+# EGFR recruits SOS
+EGFR(I_III!+,sos)+SOS(egfr)<->EGFR(I_III!+,sos!1).SOS(egfr!1) kpSOS,kmSOS
+
+# RAS gets GTP through interaction with active SOS
+#grb2 rate from EGFR_module
+SOS(egfr!+)+RAS(g~D)->SOS(egfr!+)+RAS(g~T) kpSOS
+# RAS GTP goes to GDP at some rate
+RAS(raf,g~T)->RAS(raf,g~D) kdGTP
+
+# RAS-GTP bind and activate RAF
+RAS(raf,g~T)+RAF(ras)<->RAS(raf!1,g~T).RAF(ras!1) kaEff,kdEff
+
+# RAF phosphorylates and activates MEK
+# rate from MAPK module... rules dont match exactly...
+RAF(ras!+)+MEK(pSite~0)->RAF(ras!+)+MEK(pSite~P) 2*kp2
+# MEK de phosphorylates and deactivates at some rate
+# rate from MAPK module... rules dont match exactly...
+MEK(pSite~P)->MEK(pSite~0) kcat2
+
+# MEK phosphorylates and activates ERK
+#rate from mapk module... rules dont match exactly...
+MEK(pSite~P)+ERK(pSite~0)->MEK(pSite~P)+ERK(pSite~P) 2*kphos3
+# ERK de phosphorylates and deactivates at some rate
+#rate from mapk module... rules dont match exactly...
+ERK(pSite~P)->ERK(pSite~0) kdephos5
+
+end reaction rules
+end model
+
+begin actions
+generate_network({overwrite=>1})
+
+# equilibrate
+
+setConcentration("EGF(EGFL)",0)
+
+# Note that RuleBender doesn't recognize 
+#   BioNetGen's new "nf" method flag yet, so the line below
+#   is marked as having an error, but the line is fine.
+simulate({method=>"nf",complex=>1,gml=>630000,t_start=>0,t_end=>100,n_steps=>100})
+
+# perform production simulation
+
+setConcentration("EGF(EGFL)",60000)
+simulate({continue=>1,method=>"nf",complex=>1,gml=>630000,t_start=>0,t_end=>600,n_steps=>200})
+
+end actions
+

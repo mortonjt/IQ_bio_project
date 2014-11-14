@@ -2,7 +2,7 @@
 %testdir='/data2/IQBIO2014/Inhibitor Timecourses/0hr';
 testdir='/Volumes/PASSPORT/IQBio/data/0hr';
 
-egf = csvread('../egf.csv');
+egf = csvread('../params/egf.csv');
 B_egf=egf(1,:);
 C_egf=egf(2,:);
 D_egf=egf(3,:);
@@ -25,7 +25,7 @@ CIs = zeros(2,numTimePoints); %Confidence Intervals
 Rsqs = zeros(1,numTimePoints);%R squares
 parfor t=1:numTimePoints
   [mratios,errs,raw_ratios,IC50,ci,rsq2] = calculateIC50(dirname,empty_well,var_well,t,egf);
-  emptys(t)=empty_ratio;
+  
   IC50s(t)=IC50;
   CIs(:,t)=ci;
   Rsqs(t)=rsq2;
@@ -33,5 +33,6 @@ parfor t=1:numTimePoints
   ratio_mat(:,t) = mratios;
   err_mat(:,t) = errs;
 end
+
 
 save('results.mat')
