@@ -1,8 +1,12 @@
 
 %% segment all of the cells
-function [processed_im,total_mask] = segment_cells(empty_im,imname)
+function [processed_im,total_mask] = segment_cells(empty_im,imname,site,wavelength)
     % imname - name of image
     % empty_im - empty image
+    % site - site name
+    % wavelength - wavelength (fret or cfp)
+    % processed_im - processed image
+    % total_mask - image mask for processed image
     im=imread(fullfile(imname));
     im2=uint16(double(im)./double(empty_im)*mean(mean(empty_im)));
     
@@ -38,13 +42,14 @@ function [processed_im,total_mask] = segment_cells(empty_im,imname)
     end
     [pathstr,name,ext] = fileparts(imname);
     [pathstr,well,ext] = fileparts(pathstr);
+    
+    imwrite(empty_im,sprintf('images/%s_%s/empty/%s_%s.tif',site,wavelength,well,name));
+    imwrite(im,sprintf('images/%s_%s/im1/%s_%s.tif',site,wavelength,well,name));
+    imwrite(im2,sprintf('images/%s_%s/im2/%s_%s.tif',site,wavelength,well,name));
+    imwrite(im3,sprintf('images/%s_%s/im3/%s_%s.tif',site,wavelength,well,name));
+    imwrite(im4,sprintf('images/%s_%s/im4/%s_%s.tif',site,wavelength,well,name));
+    imwrite(im5,sprintf('images/%s_%s/im5/%s_%s.tif',site,wavelength,well,name));
 
-%    imwrite(imcomplement(empty_im),sprintf('images/%s_%s_empty.tif',well,name));
-%    imwrite(imcomplement(im),sprintf('images/%s_%s_im1.tif',well,name));
-%    imwrite(imcomplement(im2),sprintf('images/%s_%s_im2.tif',well,name));
-%    imwrite(imcomplement(im3),sprintf('images/%s_%s_im3.tif',well,name));
-%    imwrite(imcomplement(im4),sprintf('images/%s_%s_im4.tif',well,name));
-%    imwrite(imcomplement(im5),sprintf('images/%s_%s_im5.tif',well,name));
 %     imshow(imcomplement(im));
 %     figure
 %     imshow(imcomplement(im2));

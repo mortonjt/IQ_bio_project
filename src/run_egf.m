@@ -15,7 +15,7 @@ var_well='B';
 numWells=10;
 numSites=4;
 numTimePoints=23;
-egf=B_egf;
+egf=G_egf;
 raw_ratio_mat = zeros(numSites,numWells,numTimePoints);
 ratio_mat = zeros(numWells,numTimePoints); %ratio image
 err_mat = zeros(numWells,numTimePoints); %error matrix
@@ -24,6 +24,7 @@ IC50s = zeros(1,numTimePoints); %IC50 values
 CIs = zeros(2,numTimePoints); %Confidence Intervals
 Rsqs = zeros(1,numTimePoints);%R squares
 parfor t=1:numTimePoints
+    
   [mratios,errs,raw_ratios,IC50,ci,rsq2] = calculateIC50(dirname,empty_well,var_well,t,egf);
   
   IC50s(t)=IC50;
