@@ -37,6 +37,7 @@ function [processed_im,total_mask] = segment_cells(empty_im,imname,site,waveleng
         %figure
         %imshow(imcomplement(tmpim));
         if(nnz(tmpim)>10)
+            im5 = im5+tmpim;
             total_mask = total_mask+mask;
         end
     end

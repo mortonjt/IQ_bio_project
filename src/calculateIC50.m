@@ -1,8 +1,8 @@
 %Calculate the IC50 for a specified timepoint
 function [mratios,errs,raw_ratios,IC50,ci,rsq2] = calculateIC50(dirname,empty_well,var_well,timepoint,egf)
 
-    fret_im_files = getFiles(dirname,var_well,1,timepoint)
-    cfp_im_files = getFiles(dirname,var_well,2,timepoint)
+    fret_im_files = getFiles(dirname,var_well,1,timepoint);
+    cfp_im_files = getFiles(dirname,var_well,2,timepoint);
     
     empty_fret_files = getEmptyFiles(dirname,empty_well,1,timepoint)
     %empty_cfp_files = getEmptyFiles(dirname,empty_well,2,timepoint);
