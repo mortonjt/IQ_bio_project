@@ -6,9 +6,9 @@ dt = .01;
 %initial concentrations
 %ordered by substrate id
 concentrations = xlsread('constant.xlsx',1,'H3:H24');
-    
+
 %equations
-equ = zeros();
+equ = zeros(15);
 
 %
 equ(1) = reverserates(1)*concentrations(13)+forwardrates(14)-forwardrates(1)*concentrations(1)*concentrations(2);
@@ -31,7 +31,14 @@ equ(13) = forwardrates(1)*concentrations(1)*concentrations(2)-forwardrates(11)*c
 equ(14) = forwardrates(9)*concentrations(9)*concentrations(7)-forwardrates(18)*concentrations(14);
 equ(15) = forwardrates(15)*concentrations(14)+reverserates(10)*concentrations(8)-forwardrates(10)*concentrations(15)*concentrations(2);
 
-
+%
+newConcentrations = zeros(15);
+for i=1:100
+    for j=1:15
+        newConcentrations(j) = concentrations(j)+equ(j);
+    end
+    concentrations = newConcentrations;
+end
 
 
 
