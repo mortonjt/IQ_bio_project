@@ -11,7 +11,7 @@ F_egf=egf(5,:);
 G_egf=egf(6,:);
 dirname=testdir;
 empty_well='B';
-var_well='B';
+var_well='G';
 numWells=10;
 numSites=4;
 numTimePoints=23;
@@ -35,5 +35,12 @@ parfor t=1:numTimePoints
   err_mat(:,t) = errs;
 end
 
+figure()
+%Look only at the wells without inhibitor
+hold all;
+for s=1:4
+    plot(squeeze(raw_ratio_mat(1,s,1:23)));
+end
+savefig(sprintf('egf_%s.fig',var_well))
 
 save('results.mat')
