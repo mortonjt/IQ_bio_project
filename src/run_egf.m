@@ -39,7 +39,8 @@ figure()
 %Look only at the wells without inhibitor
 hold all;
 for s=1:4
-    plot(squeeze(raw_ratio_mat(1,s,1:23)));
+    squeeze(raw_ratio_mat(s,1,:))
+    plot(squeeze(raw_ratio_mat(s,1,:)));
 end
 savefig(sprintf('egf_%s.fig',var_well))
 

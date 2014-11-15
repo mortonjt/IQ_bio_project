@@ -19,28 +19,29 @@ function [processed_im,total_mask] = segment_cells(empty_im,imname,site,waveleng
     %Calculate background intensity
     %v = reshape(im2,[1,numel(im2)]);
     %bkg = prctile(v,[99.5]);
-    bkg = 750;
+    bkg = 500;
     im3(im3<bkg)=0;
     im4=im3;
     bw=im2bw(im4,0);
     bw2=bwareaopen(bw,5);
-    cc = bwconncomp(im4);  
+    %cc = bwconncomp(im4);  
     im4(bw2==0)=0;
     processed_im = im4;
-    total_mask = uint16(zeros(size(im3)));
-    im5 = uint16(zeros(size(im)));
-    for cell = 1:cc.NumObjects        
-        bwc=zeros(size(im3));
-        bwc(cc.PixelIdxList{cell})=1;
-        mask = uint16(bwc);
-        tmpim = im4.*mask;
-        %figure
-        %imshow(imcomplement(tmpim));
-        if(nnz(tmpim)>10)
-            im5 = im5+tmpim;
-            total_mask = total_mask+mask;
-        end
-    end
+    total_mask = uint16(bw2);
+    %total_mask = uint16(zeros(size(im3)));
+    %im5 = uint16(zeros(size(im)));
+%     for cell = 1:cc.NumObjects        
+%         bwc=zeros(size(im3));
+%         bwc(cc.PixelIdxList{cell})=1;
+%         mask = uint16(bwc);
+%         tmpim = im4.*mask;
+%         %figure
+%         %imshow(imcomplement(tmpim));
+%         if(nnz(tmpim)>10)
+%             im5 = im5+tmpim;
+%             total_mask = total_mask+mask;
+%         end
+%     end
     [pathstr,name,ext] = fileparts(imname);
     [pathstr,well,ext] = fileparts(pathstr);
     
@@ -49,7 +50,7 @@ function [processed_im,total_mask] = segment_cells(empty_im,imname,site,waveleng
     imwrite(im2,sprintf('images/%s_%s/im2/%s_%s.tif',site,wavelength,well,name));
     imwrite(im3,sprintf('images/%s_%s/im3/%s_%s.tif',site,wavelength,well,name));
     imwrite(im4,sprintf('images/%s_%s/im4/%s_%s.tif',site,wavelength,well,name));
-    imwrite(im5,sprintf('images/%s_%s/im5/%s_%s.tif',site,wavelength,well,name));
+    %imwrite(im5,sprintf('images/%s_%s/im5/%s_%s.tif',site,wavelength,well,name));
 
 %     imshow(imcomplement(im));
 %     figure
