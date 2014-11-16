@@ -42,14 +42,14 @@ function [processed_im,total_mask] = segment_cells(empty_im,imname,site,waveleng
 %             total_mask = total_mask+mask;
 %         end
 %     end
-    [pathstr,name,ext] = fileparts(imname);
-    [pathstr,well,ext] = fileparts(pathstr);
-    
-    imwrite(empty_im,sprintf('images/%s_%s/empty/%s_%s.tif',site,wavelength,well,name));
-    imwrite(im,sprintf('images/%s_%s/im1/%s_%s.tif',site,wavelength,well,name));
-    imwrite(im2,sprintf('images/%s_%s/im2/%s_%s.tif',site,wavelength,well,name));
-    imwrite(im3,sprintf('images/%s_%s/im3/%s_%s.tif',site,wavelength,well,name));
-    imwrite(im4,sprintf('images/%s_%s/im4/%s_%s.tif',site,wavelength,well,name));
+%     [pathstr,name,ext] = fileparts(imname);
+%     [pathstr,well,ext] = fileparts(pathstr);
+%     
+%     imwrite(empty_im,sprintf('images/%s_%s/empty/%s_%s.tif',site,wavelength,well,name));
+%     imwrite(im,sprintf('images/%s_%s/im1/%s_%s.tif',site,wavelength,well,name));
+%     imwrite(im2,sprintf('images/%s_%s/im2/%s_%s.tif',site,wavelength,well,name));
+%     imwrite(im3,sprintf('images/%s_%s/im3/%s_%s.tif',site,wavelength,well,name));
+%     imwrite(im4,sprintf('images/%s_%s/im4/%s_%s.tif',site,wavelength,well,name));
     %imwrite(im5,sprintf('images/%s_%s/im5/%s_%s.tif',site,wavelength,well,name));
 
 %     imshow(imcomplement(im));

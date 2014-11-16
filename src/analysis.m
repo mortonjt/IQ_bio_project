@@ -10,25 +10,41 @@ colors = [255 0 0;
           0 128 255;
           0 0   255;
           128 0 255];
+egf = csvread('../params/egf.csv');
+B_egf=egf(1,:);
+C_egf=egf(2,:);
+D_egf=egf(3,:);
+E_egf=egf(4,:);
+F_egf=egf(5,:);
+G_egf=egf(6,:);
+n=23;
+t = 0:16.3:16.3*(n-1);
 for i=1:6
-    figure(i)
+    f=figure(i)
     hold all;
-    load(sprintf('../results/6hr/%s_results.mat',wells(i)));
+    load(sprintf('../results/0hr/%s_results.mat',wells(i)));
     size(ratio_mat)
     for w=1:10 %iterate over all well concentrations
-        plot(ratio_mat(w,:),'Color',colors(w,:)/255);
+        plot(t,ratio_mat(w,:),'Color',colors(w,:)/255);
     end
     title(sprintf('well %s',wells(i)))
-    legend('plot1','plot2','plot3','plot4','plot5','plot6','plot7','plot8','plot9','plot10');
-    savefig(sprintf('well_%s.fig',wells(i)))
-    
-    figure(i+6)
+    ylabel('Intensity')
+    xlabel('Time (seconds)')
+    legend(num2str(egf(i,:)));
+    legend(strtrim(cellstr(num2str(egf(i,:)'))'))
+    %savefig(sprintf('well_%s.fig',wells(i)))
+    saveas(f,sprintf('well_%s.png',wells(i)))
+    f=figure(i+6)
     %Look only at the wells without inhibitor
     hold all;
     for s=1:4
-        plot(squeeze(raw_ratio_mat(s,1,:)));
+        plot(t,squeeze(raw_ratio_mat(s,1,:)));
     end
     title(sprintf('well %s',wells(i)))
-    savefig(sprintf('egf_%s.fig',wells(i)))
+    ylabel('Intensity')
+    xlabel('Time (seconds)')
+    
+    %savefig(sprintf('egf_%s.fig',wells(i)))
+    saveas(f,sprintf('egf_%s.png',wells(i)))
     
 end

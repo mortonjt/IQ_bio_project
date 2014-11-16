@@ -4,7 +4,7 @@ function [mratios,errs,raw_ratios,IC50,ci,rsq2] = calculateIC50(dirname,empty_we
     fret_im_files = getFiles(dirname,var_well,1,timepoint);
     cfp_im_files = getFiles(dirname,var_well,2,timepoint);
     
-    empty_fret_files = getEmptyFiles(dirname,empty_well,1,timepoint)
+    empty_fret_files = getEmptyFiles(dirname,empty_well,1,timepoint);
     %empty_cfp_files = getEmptyFiles(dirname,empty_well,2,timepoint);
     well1_ratio = intensities(fret_im_files(1,:),cfp_im_files(1,:),empty_fret_files{1},'site_1');
     well2_ratio = intensities(fret_im_files(2,:),cfp_im_files(2,:),empty_fret_files{2},'site_2');
