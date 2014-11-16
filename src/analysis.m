@@ -1,13 +1,22 @@
 
 wells = 'BCDEFG';
-
+colors = [255 0 0; 
+          255 128 0; 
+          255 255 0; 
+          128 255 0; 
+          0 255 0; 
+          0 255 128; 
+          0 255 255;
+          0 128 255;
+          0 0   255;
+          128 0 255];
 for i=1:6
     figure(i)
     hold all;
-    load(sprintf('results/%s_results.mat',wells(i)));
+    load(sprintf('../results/6hr/%s_results.mat',wells(i)));
     size(ratio_mat)
     for w=1:10 %iterate over all well concentrations
-        plot(ratio_mat(w,:));
+        plot(ratio_mat(w,:),'Color',colors(w,:)/255);
     end
     title(sprintf('well %s',wells(i)))
     legend('plot1','plot2','plot3','plot4','plot5','plot6','plot7','plot8','plot9','plot10');
@@ -17,8 +26,9 @@ for i=1:6
     %Look only at the wells without inhibitor
     hold all;
     for s=1:4
-        plot(squeeze(raw_ratio_mat(1,s,2:23)));
+        plot(squeeze(raw_ratio_mat(s,1,:)));
     end
+    title(sprintf('well %s',wells(i)))
     savefig(sprintf('egf_%s.fig',wells(i)))
     
 end
