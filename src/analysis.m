@@ -25,7 +25,8 @@ for i=1:6
     load(sprintf('../results/0hr/%s_results.mat',wells(i)));
     size(ratio_mat)
     for w=1:10 %iterate over all well concentrations
-        plot(t,ratio_mat(w,:),'Color',colors(w,:)/255);
+        raw_means = squeeze(mean(raw_ratio_mat(:,w,:),1));
+        plot(t,raw_means,'Color',colors(w,:)/255);
     end
     title(sprintf('well %s',wells(i)))
     ylabel('Intensity')

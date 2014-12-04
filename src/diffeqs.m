@@ -1,43 +1,43 @@
-forwardrates = xlsread('constant.xlsx',1,'E3:E21');
-reverserates = xlsread('constant.xlsx',1,'F3:F21');
+fwdK = xlsread('constant.xlsx',1,'E3:E21');
+revK = xlsread('constant.xlsx',1,'F3:F21');
 
 dt = .01;
 
-%initial concentrations
+%initial C
 %ordered by substrate id
-concentrations = xlsread('constant.xlsx',1,'H3:H24');
+C = xlsread('constant.xlsx',1,'H3:H24');
 
 %equations
 equ = zeros(15);
 
+
+equ(1) = revK(1)*C(13)+fwdK(14)-fwdK(1)*C(1)*C(2);                                      %d(EGF)/dt     
+equ(2) = revK(1)*C(13)+revK(10)*C(8)+fwdK(13)-fwdK(1)*C(1)*C(2)-fwdK(10)*C(15)*C(2);    %d(EGF:EGFR)/dt
+equ(3) = fwdK(3)*C(12)*C(4)+fwdK(12)*C(9)*C(12)-fwdK(2)*C(13)*C(3);
+
+equ(4) = fwdK(4)*C(11)-fwdK(3)*C(12)*C(4)+fwdK(19)*C(9)*C(11);
+equ(5) = fwdK(5)*C(11)*C(10)-fwdK(6)*C(5)-fwdK(5)*C(11)*C(5);
+equ(6) = fwdK(8)*C(9)-fwdK(7)*C(5)*C(6);
+
+equ(7) = fwdK(18)*C(14)-fwdK(9)*C(9)*C(7);
+equ(8) = fwdK(10)*C(15)*C(2)-revK(10)*C(8)-fwdK(16)*C(8);
+equ(9) = fwdK(7)*C(5)*C(6)-fwdK(8)*C(9);
+
+equ(10) = fwdK(6)*C(5)-fwdK(5)*C(11)*C(10);
+equ(11) = fwdK(3)*C(12)*C(4)-fwdK(4)*C(11)-fwdK(19)*C(9)*C(11);
+equ(12) = fwdK(2)*C(13)*C(3)+fwdK(17)*C(8)*C(3)-fwdK(3)*C(12)*C(4)-fwdK(12)*C(9)*C(12);
+
+equ(13) = fwdK(1)*C(1)*C(2)-fwdK(11)*C(13)-revK(1)*C(13);
+equ(14) = fwdK(9)*C(9)*C(7)-fwdK(18)*C(14);
+equ(15) = fwdK(15)*C(14)+revK(10)*C(8)-fwdK(10)*C(15)*C(2);
+
 %
-equ(1) = reverserates(1)*concentrations(13)+forwardrates(14)-forwardrates(1)*concentrations(1)*concentrations(2);
-equ(2) = reverserates(1)*concentrations(13)+reverserates(10)*concentrations(8)+forwardrates(13)-forwardrates(1)*concentrations(1)*concentrations(2)-forwardrates(10)*concentrations(15)*concentrations(2);
-equ(3) = forwardrates(3)*concentrations(12)*concentrations(4)+forwardrates(12)*concentrations(9)*concentrations(12)-forwardrates(2)*concentrations(13)*concentrations(3);
-
-equ(4) = forwardrates(4)*concentrations(11)-forwardrates(3)*concentrations(12)*concentrations(4)+forwardrates(19)*concentrations(9)*concentrations(11);
-equ(5) = forwardrates(5)*concentrations(11)*concentrations(10)-forwardrates(6)*concentrations(5)-forwardrates(5)*concentrations(11)*concentrations5);
-equ(6) = forwardrates(8)*concentrations(9)-forwardrates(7)*concentrations(5)*concentrations(6);
-
-equ(7) = forwardrates(18)*concentrations(14)-forwardrates(9)*concentrations(9)*concentrations(7);
-equ(8) = forwardrates(10)*concentrations(15)*concentrations(2)-reverserates(10)*concentrations(8)-forwardrates(16)*concentrations(8);
-equ(9) = forwardrates(7)*concentrations(5)*concentrations(6)-forwardrates(8)*concentrations(9);
-
-equ(10) = forwardrates(6)*concentrations(5)-forwardrates(5)*concentrations(11)*concentrations(10);
-equ(11) = forwardrates(3)*concentrations(12)*concentrations(4)-forwardrates(4)*concentrations(11)-forwardrates(19)*concentrations(9)*concentrations(11);
-equ(12) = forwardrates(2)*concentrations(13)*concentrations(3)+forwardrates(17)*concentrations(8)*concentrations(3)-forwardrates(3)*concentrations(12)*concentrations(4)-forwardrates12)*concentrations(9)*concentrations(12);
-
-equ(13) = forwardrates(1)*concentrations(1)*concentrations(2)-forwardrates(11)*concentrations(13)-reverserates(1)*concentrations(13);
-equ(14) = forwardrates(9)*concentrations(9)*concentrations(7)-forwardrates(18)*concentrations(14);
-equ(15) = forwardrates(15)*concentrations(14)+reverserates(10)*concentrations(8)-forwardrates(10)*concentrations(15)*concentrations(2);
-
-%
-newConcentrations = zeros(15);
+newC = zeros(15);
 for i=1:100
     for j=1:15
-        newConcentrations(j) = concentrations(j)+equ(j);
+        newC(j) = C(j)+equ(j);
     end
-    concentrations = newConcentrations;
+    C = newC;
 end
 
 
