@@ -1,6 +1,6 @@
-function dydt = func_ODEs(t,y)
+function dydt = func_ODEs(t, y, conc2, p_mine)
 
-global conc2 p_mine
+%global conc2 p_mine
 kinetic_p=p_mine;
 dydt = zeros(18,1);    % initialize dydyt as a column vector
 
