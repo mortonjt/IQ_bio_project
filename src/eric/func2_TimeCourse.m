@@ -22,12 +22,13 @@ for t=1:numel(time_course)-1
         conc2(inhib(1))=conc(inhib(1),inhib(2));
     end
     
-    [time_now, y_now]=ode23s(@func_ODEs,t:t+1,y(t,:));
+    options=odeset('NonNegative',1:25);
+    [time_now, y_now]=ode45(@func_ODEs,t:t+1,y(t,:),options);
     time=[time;time_now];
     y_all=[y_all;y_now];
     
     y_cor=y_all;
-    y_cor(y_cor<0)=0;
+    %y_cor(y_cor<0)=0;
     if y_cor(end,17)<EGF_cell,y_cor(end,17)=EGF_cell;end
     
     y(t+1,:)=y_cor(end,:);
