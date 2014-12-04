@@ -1,6 +1,7 @@
-clear,clc
+clear,clc;
 
-global conc conc2
+%global conc conc2
+conc = zeros(6,5);
 conc(1,:)=xlsread('Inhib Values.xlsx','0hr','B2:K2');
 conc(2,:)=xlsread('Inhib Values.xlsx','0hr','M2:V2');
 conc(3,:)=xlsread('Inhib Values.xlsx','0hr','X2:AG2');

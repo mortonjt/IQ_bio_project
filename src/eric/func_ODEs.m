@@ -155,3 +155,4 @@ function returnValue = Menten_Explicit_Enzyme(Kcat, E, S, km)
 returnValue = Kcat*E*S/(km+S);
 
 
+
