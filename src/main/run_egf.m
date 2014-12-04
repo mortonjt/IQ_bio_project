@@ -2,7 +2,7 @@
 %testdir='/data2/IQBIO2014/Inhibitor Timecourses/0hr';
 testdir='/Volumes/PASSPORT/IQBio/data/0hr';
 
-egf = csvread('../params/egf.csv');
+egf = csvread('../../params/egf.csv');
 B_egf=egf(1,:);
 C_egf=egf(2,:);
 D_egf=egf(3,:);
@@ -42,6 +42,7 @@ for s=1:4
     squeeze(raw_ratio_mat(s,1,:))
     plot(squeeze(raw_ratio_mat(s,1,:)));
 end
-savefig(sprintf('egf_%s.fig',var_well))
+savefig(sprintf('../../results/0hr/egf_%s.mat',var_well))
+%savefig(sprintf('egf_%s.fig',var_well))
 
-save('results.mat')
+save('../../results/0hr/results.mat')

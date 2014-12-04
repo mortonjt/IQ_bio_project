@@ -1,7 +1,7 @@
 
 testdir='/data2/IQBIO2014/Inhibitor Timecourses/0hr';
 
-egf = csvread('../egf.csv');
+egf = csvread('../../egf.csv');
 B_egf=egf(1,:);
 C_egf=egf(2,:);
 D_egf=egf(3,:);
@@ -33,6 +33,6 @@ for i=1:6
      ratio_mat(:,t) = mratios;
      err_mat(:,t) = errs;
    end
-   save(sprintf('%s_results.mat',var_well))
+   save(sprintf('../../results/0hr/%s_results.mat',var_well))
 end
 
