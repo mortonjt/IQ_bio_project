@@ -59,29 +59,8 @@ parfor walker = 1:numWalkers
                                   params(walker,:),0,Inf);
     scores(walker) = r2;
     best_params(walker,:) = p;
-    
-%     c_ = c; c2_ = c2; %temporary variables for c and c2;
-%     [prev_r2,~,c_,c2_] = func3_fmin(params(walker,:),initial_conditions,EGF_conc,inhib,time_course,te,tp,fract,tf,c,c2);
-%     for i = 2:numIterations
-%         p = abs(normrnd(params(walker,:),ones(1,numParams)));
-%         [r2,~,c_,c2_] = func3_fmin(p,initial_conditions,EGF_conc,inhib,time_course,te,tp,fract,tf,c,c2);
-%         alpha = exp(r2-prev_r2/(k*T));
-%         if alpha>=1
-%             params(walker,:) = p;
-%             scores(walker) = r2;
-%             best_params(walker,:) = p;
-%             prev_r2 = r2;
-%             c = c_; c2 = c2_;
-%         else
-%             if rand<alpha
-%                 params(walker,:) = p;
-%                 c = c_; c2 = c2_;
-%             end
-%         end
-% 
-%     end
 end
-
+save('../../results/optimization_results.mat')
 
 
 
