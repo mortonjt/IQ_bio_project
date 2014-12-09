@@ -1,0 +1,12 @@
+#!/bin/bash
+#SBATCH -J MCMC
+#SBATCH --qos=janus-long
+#SBATCH -N 1
+#SBATCH --ntasks-per-node=12
+#SBATCH -t 100:00:00
+#SBATCH -o report_mcmc.out
+
+module load slurm
+module load matlab/matlab-2012b
+cd /home/jamo1880/Documents/IQ_bio_project/src/main
+matlab -r mcmc_tune
