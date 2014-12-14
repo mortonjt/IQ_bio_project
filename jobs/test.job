@@ -1,10 +1,10 @@
-#PBS -N EGF_analysis
+#PBS -N testing
 #PBS -l nodes=1
 #PBS -l cput=20:00:00
 #PBS -M jamo1880@colorado.edu
 #PBS -mabe
 
-cd ~/Documents/IQ_bio_project2/src/main
+cd ~/Documents/IQ_bio_project/src/main
 module load matlab_R2013b
 #Why is qsub fucking up?
 #matlab -r "run_egf"

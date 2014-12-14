@@ -6,4 +6,4 @@
 cd ~/Documents/IQ_bio_project/src/main
 module load matlab_R2013b
 
-matlab -r "mcmc_tune"
+matlab -nodesktop -r "mcmc_tune"

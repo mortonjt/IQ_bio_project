@@ -55,9 +55,9 @@ for walker = 1:numWalkers
     walker
     c = squeeze(conc(walker,:,:));
     c2 = squeeze(conc2(walker,:));
-    options=saoptimset('ObjectiveLimit',0,'TolFun',0.001,'MaxFunEval',1000,'Display','iter');
+    options=saoptimset('ObjectiveLimit',0,'TolFun',0.001,'MaxFunEval',100,'Display','iter');
     [p, r2] = simulannealbnd(@(p) func3_fmin(p,initial_conditions,EGF_conc,inhib,time_course,te,tp,fract,tf,c,c2), ...
-			     params(walker,:),0,1000,options);
+			     params(walker,:),0,100,options);
     scores(walker) = r2;
     best_params(walker,:) = p
     save(sprintf('../../results/optimization_%d_results.mat',walker))
