@@ -49,7 +49,7 @@ tp=1;te=500;
 
 %%Run Monte Carlo Markov Chain algorithm (Metropolis Hastings algorithm)
 %%http://en.wikipedia.org/wiki/Metropolis%E2%80%93Hastings_algorithm
-%%Also known as simulated annealin
+%%Also known as simulated annealing
 for walker = 1:numWalkers
     %Now generate a random walk
     walker
