@@ -5,7 +5,7 @@ addpath ../eric
 k = 1.38e-23; %Boltzmann constant
 
 %Load model values
-numWalkers = 10;
+numWalkers = 1;
 numIterations = 10;
 numParams = 56;
 params = zeros(numWalkers,numParams);
@@ -49,16 +49,18 @@ tp=1;te=500;
 
 %%Run Monte Carlo Markov Chain algorithm (Metropolis Hastings algorithm)
 %%http://en.wikipedia.org/wiki/Metropolis%E2%80%93Hastings_algorithm
-%%Also known as simulated annealing
-parfor walker = 1:numWalkers
+%%Also known as simulated annealin
+for walker = 1:numWalkers
     %Now generate a random walk
     walker
     c = squeeze(conc(walker,:,:));
     c2 = squeeze(conc2(walker,:));
+    options=saoptimset('ObjectiveLimit',0,'TolFun',0.001,'MaxFunEval',1000,'Display','iter');
     [p, r2] = simulannealbnd(@(p) func3_fmin(p,initial_conditions,EGF_conc,inhib,time_course,te,tp,fract,tf,c,c2), ...
-                                  params(walker,:),0,Inf);
+			     params(walker,:),0,1000,options);
     scores(walker) = r2;
-    best_params(walker,:) = p;
+    best_params(walker,:) = p
+    save(sprintf('../../results/optimization_%d_results.mat',walker))
 end
 save('../../results/optimization_results.mat')
 

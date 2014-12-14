@@ -34,7 +34,8 @@ function [time, y_vals, params, conc, conc2]=func2_TimeCourse(params, ...
         end
 
         options=odeset('NonNegative',1:25);
-        %[time_now, y_now]=ode45(@func_ODEs,t:t+1,y(t,:),conc2,params,options);
+        tspan = t:20:t+1;
+        %[time_now, y_now]=ode45(@func_ODEs,tspan,y(t,:),conc2,params,options);
         [time_now, y_now]=ode45(@(T,Y) func_ODEs(T,Y,conc2,params),t:t+1,y(t,:),options);
         %time=[time;time_now];
         %y_all=[y_all;y_now];

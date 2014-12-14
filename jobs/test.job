@@ -4,7 +4,8 @@
 #PBS -M jamo1880@colorado.edu
 #PBS -mabe
 
-cd ~/Documents/IQ_bio_project2/src
+cd ~/Documents/IQ_bio_project2/src/main
 module load matlab_R2013b
-
-matlab -r "run_egf"
+#Why is qsub fucking up?
+#matlab -r "run_egf"
+matlab -r "test"
