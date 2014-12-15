@@ -1,7 +1,7 @@
 %MCMC
 clear,clc
 addpath ../eric
-
+addpath ../../
 k = 1.38e-23; %Boltzmann constant
 
 %Load model values
