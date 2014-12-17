@@ -1,0 +1,11 @@
+No window system found.  Java option 'MWT' ignored.
+{Error using fmin_tune (line 71)
+Transparency violation error.
+ SeeParallel Computing Toolbox documentation about Transparency
+
+Caused by:
+    Error using save
+    Transparency violation error.
+     SeeParallel Computing Toolbox documentation about Transparency
+} 
+
