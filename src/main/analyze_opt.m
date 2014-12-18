@@ -44,23 +44,27 @@ aERK = zeros(n_concs,1);
 simERK = zeros(n_inh, tLen);
 inhib=[1,1]; %inhibitor addition (wtf?)
 
-
+realERK = zeros(n_inh,length(time));
 %Plot each inhibitor
+%figure()
 for inh=1:n_inh
-    figure()
-    hold all;
-    subplot(211)
-    hold on;    
+   
+    %hold all;
+    %subplot(211)
+    %hold on;    
     %Loop over all concentrations (aka wells)
-    for w=1:n_concs
-        realERK = squeeze(erk(inh,:,w));
-        realT = linspace(time(1),time(end),length(realERK));
-        plot(realT,realERK,'Color',colors(w,:)/255);
-        title('Actual ERK activity')
-    end
-    subplot(212)
+    w = 1;
+    %for w=1:n_concs
+    k = squeeze(erk(inh,:,w));
+    realERK(inh,:)=k;
+    %realT = linspace(time(1),time(end),length(realERK));
+    
+    %plot(realT,realERK);
+    %title('Actual ERK activity')
+    %end
+    %subplot(212)
     hold on;    
-    for w=1:n_concs
+    %for w=1:n_concs
         [t, y_vals, c, c2]=func2_TimeCourse(best_params,initial_conditions2,...
                                             egf_concs(inh,w), ...   
                                             inhib, ...                       
@@ -71,14 +75,22 @@ for inh=1:n_inh
         ERK_t=ERK;
         simERK=aERK_t./(aERK_t+ERK_t);
         simT = linspace(time(1),time(end),length(simERK));
-        subplot(212)
-        plot(simT,simERK,'Color',colors(w,:)/255);
-        title('Predicted ERK activity')
-   end
+        %subplot(212)
+        %plot(simT,simERK);
+        %title('Predicted ERK activity')
+   %end
 end
-
-                                         
-                                         
+figure()
+hold all;
+subplot(211)
+errorbar(time,mean(realERK),std(realERK));
+title('Measured ERK')
+ylabel('Measured Activity (Intensity)')
+subplot(212)
+plot(simT,simERK)
+title('Predicted ERK')
+ylabel('Normalized Activity');
+xlabel('Time (hr)')
                                          
                                          
                                          

@@ -10,8 +10,10 @@ runNumber = 2
 numWalkers = 1;
 numIterations = 10;
 numParams = 56;
+numWells = 10;
+numInhibitors = 6;
 params = zeros(numWalkers,numParams);
-best_params = zeros(numWalkers,numParams);
+best_params = zeros(numInhibitors,numWells,numParams);
 scores = zeros(numWalkers);
 params(1,:) = xlsread('../../params/simplified values.xlsx','Values2','I2:I57');
 
@@ -67,20 +69,19 @@ walker = 1
 %inh=5: CI-1040: 55
 %inh=6: SCH7: 56
 inh_idx = 50 %starting index for inhibitors in params
-
 for inh = 1:6 %loop over all inhibitors
   
   c = squeeze(conc(walker,:,:));
   c2 = squeeze(conc2(walker,:));
   opts=optimset('Display','iter','MaxFunEvals',1e3,'MaxIter',5e2);
 
-  for w = 1:10
+  parfor w = 1:10
      if w>1
         w_params = [params(walker,inh_idx+inh)]     % Initial parameter estimate
-        idxs = [inh_idx+inh]                        % Indexes of parameters
+        idxs = [inh_idx+inh];                       % Indexes of parameters
      else
         w_params = [params(walker,1:inh_idx)]       % Initial parameter estimate
-	idxs = [1:inh_idx]                          % Indexes of parameters
+	    idxs = [1:inh_idx];                         % Indexes of parameters
      end
      
      actual = erk(inh,w,:) %Actual values to calculate SSE
@@ -88,8 +89,7 @@ for inh = 1:6 %loop over all inhibitors
                                         EGF_conc,inhib,time_course, ...
                                         te,tp,fract,tf,c,c2,p,idxs,actual), ...
                          w_params,opts);
-     p
-     save(sprintf('../../results/fmin_%d_results_run_%d.mat',w,runNumber))
+     best_params(inh,w,:) = p;
   end
 end
 
